@@ -1,0 +1,8 @@
+{
+  "id": "opencloud",
+  "version": "latest",
+  "image": "opencloudeu/opencloud-rolling:latest",
+  "youtube": "",
+  "docs_link": "",
+  "big_bear_cosmos_youtube": ""
+}

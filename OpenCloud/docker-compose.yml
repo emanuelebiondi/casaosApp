@@ -1,0 +1,76 @@
+# Configuration for OpenCloud setup
+
+name: big-bear-opencloud
+
+services:
+  opencloud:
+    container_name: opencloud
+    image: opencloudeu/opencloud-rolling:latest
+    restart: unless-stopped
+    ports:
+      - 9200:9200
+    volumes:
+      - /DATA/AppData/$AppID/config:/etc/opencloud
+      - /DATA/AppData/$AppID/data:/var/lib/opencloud
+    environment:
+      - OC_INSECURE=true
+      - PROXY_HTTP_ADDR=0.0.0.0:9200
+      - OC_URL=https://localhost:9200
+
+    networks:
+      - opencloud_network
+
+    x-casaos:
+      volumes:
+        - container: /etc/opencloud
+          description:
+            en_us: "Configuration files"
+        - container: /var/lib/opencloud
+          description:
+            en_us: "Application data"
+      envs:
+        - container: OC_INSECURE
+          description:
+            en_us: "Disable certificate validation"
+        - container: PROXY_HTTP_ADDR
+          description:
+            en_us: "HTTP bind address"
+        - container: OC_URL
+          description:
+            en_us: "External access URL"
+      ports:
+        - container: "9200"
+          description:
+            en_us: "Web UI port"
+
+networks:
+  opencloud_network:
+    driver: bridge
+
+x-casaos:
+  architectures:
+    - amd64
+    - arm64
+  main: opencloud
+  description:
+    en_us: OpenCloud is a self-hosted platform for identity and access management, file sharing, and more.
+  tagline:
+    en_us: A secure and modern self-hosted cloud
+  developer: "OpenCloud"
+  author: OpenCloud
+  icon: https://avatars.githubusercontent.com/u/188916550?s=200&v=4
+  thumbnail: https://raw.githubusercontent.com/opencloud-eu/opencloud/refs/heads/main/opencloud_logo.png
+  screenshot_link:
+    - https://raw.githubusercontent.com/opencloud-eu/.github/refs/heads/main/profile/web-ui-gallery-view-optimized.jpg
+  title:
+    en_us: OpenCloud
+  category: BigBearCasaOS
+  port_map: "9200"
+  tips:
+    before_install:
+      en_us: |
+        The first time you run this app, it will initialize itself automatically.
+        Visit https://localhost:9200 and log in with:
+        **User:** `admin`  
+        **Password:** `admin`
+
